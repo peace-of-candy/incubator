@@ -1,6 +1,9 @@
+import os
+import zipfile
 from os.path import abspath, dirname
 
 import requests
+import urllib.request
 from bs4 import BeautifulSoup
 import pandas as pd
 
@@ -35,9 +38,23 @@ rda_elements_to_unit_map = {'Calcium': 'mg', 'Chromium': 'μg', 'Copper': 'μg',
 rda_vitamins_to_unit_map = {'Vitamin A': 'μg', 'Vitamin C': 'mg', 'Vitamin D': 'μg', 'Vitamin E': 'mg', 'Vitamin K': 'μg', 'Thiamin': 'mg', 'Riboflavin': 'mg', 'Niacin': 'mg', 'Vitamin B6': 'mg', 'Folate': 'μg', 'Vitamin B12': 'μg', 'Pantothenic Acid': 'mg', 'Biotin': 'μg', 'Choline': 'mg'}
 
 
+nutrient_data_url = 'https://www.ars.usda.gov/ARSUserFiles/80400525/Data/SR/SR28/dnload/sr28abxl.zip'
+download_path = dirname(dirname(abspath(__file__))) + "/download"
+nutrient_data_zip = download_path + "/ABBREV.zip"
+nutrient_data_file = download_path + "/ABBREV.xlsx"
 
-nutrient_data = dirname(dirname(abspath(__file__))) + "/ABBREV.xlsx"
-food_df = pd.read_excel(nutrient_data)
+if not os.path.exists(download_path):
+    os.makedirs(download_path )
+
+# Downloads zip file, unzip and remove zip file.
+if not os.path.exists(nutrient_data_file):
+    urllib.request.urlretrieve(nutrient_data_url, nutrient_data_zip)
+    zip_ref = zipfile.ZipFile(nutrient_data_zip, 'r')
+    zip_ref.extractall(download_path)
+    zip_ref.close()
+    os.remove(nutrient_data_zip)
+
+food_df = pd.read_excel(nutrient_data_file)
 
 def get_nutrient_data(df, item):
     return df.loc[df['Shrt_Desc'] == item]
