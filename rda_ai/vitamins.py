@@ -8,7 +8,7 @@ b_vitamins = {
     'Vitamin_B3': ['Niacin'],
     'Vitamin_B5': ['Pantothenic Acid'],
     'Vitamin_B6': ['Pyridoxine'],
-    'Vimtain_B7': ['Biotin'],
+    'Vitamin_B7': ['Biotin'],
     'Vitamin_B9': ['Folate', 'Folic Acid'],
     'Vitamin_B12': ['Cobalamin'],
 }
@@ -43,6 +43,12 @@ Vitamins = Enum('Vitamins',
         itertools.product(v, [k]) for k, v in all_vitamins.items()
         ))
 
-# We now have support for aliases and alternate spellings
-assert(Vitamins.Vitamin_B1 == Vitamins['Vitamin B1'] == Vitamins['Vitamin_B1'] == Vitamins['Thiamine'] == Vitamins['Thiamin'])
-assert(Vitamins.Vitamin_A == Vitamins['Vitamin_A'] == Vitamins['Vitamin A'])
+# We now have support for string indexing,
+assert(Vitamins.Vitamin_B1 == Vitamins['Vitamin B1'])
+
+# aliases, 
+assert(Vitamins.Vitamin_B1 == Vitamins['Thiamine'])
+
+# and alternate spellings
+assert(Vitamins.Vitamin_B1 == Vitamins['Thiamin'])
+

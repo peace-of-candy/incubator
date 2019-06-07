@@ -7,7 +7,7 @@ import pandas as pd
 from os.path import abspath, dirname
 from typing import Tuple
 
-from micronutrient import is_micronutrient
+from micronutrients import is_micronutrient
 
 def file_exists(path: str) -> bool:
     """

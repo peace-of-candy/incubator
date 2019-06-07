@@ -7,7 +7,7 @@ import pandas as pd
 from typing import Tuple
 from bs4 import BeautifulSoup
 
-from micronutrient import is_micronutrient
+from micronutrients import is_micronutrient
 
 rda_ai_vitamins_url = 'https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t2/?report=objectonly'
 rda_ai_elements_url = 'https://www.ncbi.nlm.nih.gov/books/NBK56068/table/summarytables.t3/?report=objectonly'
