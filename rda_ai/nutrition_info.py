@@ -56,3 +56,9 @@ if not file_exists(nutrient_data_file):
     os.remove(nutrient_data_zip)
 
 food_df = pd.read_excel(nutrient_data_file)
+# Rename all shorthand annotations for vitamins. So, for instance, turn 'Vit C' to 'Vitamin C'
+food_df.rename(
+    columns={c: c.replace('Vit', 'Vitamin') for c in food_df.columns},
+    inplace=True)
+
+print(measurements_to_unit_map(food_df))
