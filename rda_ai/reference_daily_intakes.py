@@ -41,13 +41,11 @@ def name_and_unit_from_axis_label(micronutrient_label: str) -> Tuple[str, str]:
 
     return tuple(name_and_unit)
 
-def micronutrient_to_metric_unit(df):
+def micronutrient_to_unit_map(df):
     micronutrients = filter(is_micronutrient, df.columns.values)
 
     return dict(map(name_and_unit_from_axis_label, micronutrients))
 
 dietary_reference_intakes_elements = get_dietary_reference_intakes(rda_ai_elements_url)
 dietary_reference_intakes_vitamins = get_dietary_reference_intakes(rda_ai_vitamins_url)
-print(micronutrient_to_metric_unit(dietary_reference_intakes_elements))
-print(micronutrient_to_metric_unit(dietary_reference_intakes_vitamins))
 
