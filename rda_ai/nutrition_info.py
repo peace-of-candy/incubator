@@ -1,9 +1,13 @@
-from typing import Tuple
 import doctest
-import pandas as pd
 import os
 import zipfile
+
+import pandas as pd
+
 from os.path import abspath, dirname
+from typing import Tuple
+
+from micronutrient import is_micronutrient
 
 def file_exists(path: str) -> bool:
     """
@@ -28,11 +32,16 @@ def name_and_unit_from_axis_label(axis_label: str) -> Tuple[str, str]:
     def remove_characters(s: str, chars: str):
         return ''.join([c for c in s if c not in chars])
 
+    assert(contains_unit_of_measurement(axis_label))
+
     name_and_unit = remove_characters(axis_label, '()').replace('_', ' ')
     name = ' '.join(name_and_unit.split(' ')[:-1])
     unit = name_and_unit.split(' ')[-1]
 
     return (name, unit)
+
+def measurement_name_from_axis_label(axis_label):
+    return name_and_unit_from_axis_label(axis_label)[0]
 
 def measurements_to_unit_map(df):
     measurements = filter(contains_unit_of_measurement, df.columns.values)
@@ -56,9 +65,19 @@ if not file_exists(nutrient_data_file):
     os.remove(nutrient_data_zip)
 
 food_df = pd.read_excel(nutrient_data_file)
+
 # Rename all shorthand annotations for vitamins. So, for instance, turn 'Vit C' to 'Vitamin C'
 food_df.rename(
     columns={c: c.replace('Vit', 'Vitamin') for c in food_df.columns},
     inplace=True)
 
-print(measurements_to_unit_map(food_df))
+# print(measurements_to_unit_map(food_df))
+
+def micronutrients(columns):
+    measurement_labels = filter(contains_unit_of_measurement, columns) # Contains unit
+    measurement_names = map(measurement_name_from_axis_label, measurement_labels)
+    micronutrients = filter(is_micronutrient, measurement_names)
+
+    return list(micronutrients)
+
+print(micronutrients(food_df.columns))

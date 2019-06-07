@@ -35,7 +35,6 @@ all_vitamins = join_dictionaries(b_vitamins, other_vitamins)
 
 # Map 'Vitamin_A' to 'Vitamin A' as well (no underscore). Remove duplicates using set
 all_vitamins = {k: list(set([k.replace('_', ' ')] + v)) for k, v in all_vitamins.items()}
-print(all_vitamins)
 assert(set(all_vitamins['Vitamin_A']) ==  set(['Vitamin A', 'Vitamin_A']))
 
 Vitamins = Enum('Vitamins', 

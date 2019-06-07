@@ -1,4 +1,6 @@
 from nutrition_info import food_df
+from vitamins import Vitamins
+from elements import Elements
 
 def get_nutrient_data(df, item):
     return df.loc[df['Shrt_Desc'] == item]
@@ -26,4 +28,4 @@ def convert_units(given_unit):
 
     return prefix[given_unit[:-1]]
 
-
+print(food_df.columns)
