@@ -14,16 +14,22 @@ seen_micronutrients = set()
 for food_stuff in [blueberries, walnuts, broccoli]:
     report = client.get_food_report(food_stuff.id, report_type=UsdaNdbReportType.full)
 
+    print(food_stuff.name)
     for nutrient in report.nutrients:
-        nutrient_name = nutrient.name.split(',')[0]
+        nutrient_name = nutrient.name.split(',')[0].title()
+
+        # Converts 'Vitamin B-6' to 'Vitamin B6'
+        if 'Vitamin' in nutrient_name:
+            nutrient_name = nutrient_name.replace('-', '')
 
         if is_micronutrient(nutrient_name):
-            seen_micronutrients.add(micronutrient_from_string(nutrient_name))
-        else:
-            print(nutrient_name)
+            print(f'{nutrient_name} {nutrient.value} {nutrient.unit}')
 
-print(seen_micronutrients)
-print(set(all_micronutrients) - seen_micronutrients)
+    print('')
+    print('')
+
+#print(seen_micronutrients)
+#print(set(all_micronutrients) - seen_micronutrients)
 
 
 
