@@ -1,7 +1,8 @@
 from enum import Enum
 
-from vitamins import Vitamins
 from elements import Elements
+from vitamins import Vitamins
+
 
 def is_enum_value(s: str, e: Enum) -> bool:
     try:

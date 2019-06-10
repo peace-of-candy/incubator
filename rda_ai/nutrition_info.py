@@ -1,5 +1,6 @@
 import doctest
 import os
+import urllib
 import zipfile
 
 import pandas as pd
@@ -9,11 +10,8 @@ from typing import Tuple
 
 from micronutrients import is_micronutrient
 
-def file_exists(path: str) -> bool:
-    """
-    :param path: can be either a filename or a directory name
-    """
-    return os.path.exists(path)
+from utils.download import file_exists
+
 
 def contains_unit_of_measurement(s: str) -> bool:
     return s.endswith('g)')
@@ -53,8 +51,6 @@ download_path = dirname(dirname(abspath(__file__))) + "/download"
 nutrient_data_zip = download_path + "/ABBREV.zip"
 nutrient_data_file = download_path + "/ABBREV.xlsx"
 
-if not file_exists(download_path):
-    os.makedirs(download_path)
 
 # Downloads zip file, unzip and remove zip file.
 if not file_exists(nutrient_data_file):

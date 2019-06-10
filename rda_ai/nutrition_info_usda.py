@@ -11,10 +11,20 @@ broccoli = next(client.search_foods('Broccoli, raw', 1))
 
 seen_micronutrients = set()
 
-for food_stuff in [blueberries, walnuts, broccoli]:
-    report = client.get_food_report(food_stuff.id, report_type=UsdaNdbReportType.full)
 
-    print(food_stuff.name)
+def find_item(item: str, size: int = 10) -> list:
+    foods_list = client.search_foods(item, size)
+    l = ()
+    for _ in range(size):
+        food_item = next(foods_list)
+        l += (food_item.id, food_item.name)
+    return l
+
+
+def get_nutrition_info(item: str) -> dict:
+    food_stuff = next(client.search_foods(item, 1))
+    report = client.get_food_report(food_stuff.id, report_type=UsdaNdbReportType.full)
+    l = {}
     for nutrient in report.nutrients:
         nutrient_name = nutrient.name.split(',')[0].title()
 
@@ -23,13 +33,29 @@ for food_stuff in [blueberries, walnuts, broccoli]:
             nutrient_name = nutrient_name.replace('-', '')
 
         if is_micronutrient(nutrient_name):
-            print(f'{nutrient_name} {nutrient.value} {nutrient.unit}')
+            l[nutrient_name] = {}
+            l[nutrient_name]["unit"] = nutrient.unit
+            l[nutrient_name]["value"] = nutrient.value
+    return l
 
-    print('')
-    print('')
+
+# for food_stuff in [blueberries, walnuts, broccoli]:
+#     report = client.get_food_report(food_stuff.id, report_type=UsdaNdbReportType.full)
+#     print(food_stuff.name)
+#     for nutrient in report.nutrients:
+#         nutrient_name = nutrient.name.split(',')[0].title()
+#
+#         # Converts 'Vitamin B-6' to 'Vitamin B6'
+#         if 'Vitamin' in nutrient_name:
+#             nutrient_name = nutrient_name.replace('-', '')
+#
+#         if is_micronutrient(nutrient_name):
+#             print(f'{nutrient_name} {nutrient.value} {nutrient.unit}')
+#
+#     print('')
+#     print('')
 
 #print(seen_micronutrients)
 #print(set(all_micronutrients) - seen_micronutrients)
-
 
 
