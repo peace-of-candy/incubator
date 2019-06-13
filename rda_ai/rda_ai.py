@@ -26,4 +26,8 @@ def convert_units(given_unit: str) -> int:
 
     return prefix[given_unit[:-1]]
 
+
+def get_in_gram(given_unit: str, value: float) -> float:
+    return pow(10, convert_units(given_unit)) * value
+
 #print(food_df.columns)
