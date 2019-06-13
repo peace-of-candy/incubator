@@ -21,21 +21,24 @@ def find_item(item: str, size: int = 10) -> list:
     return l
 
 
-def get_nutrition_info(item: str) -> dict:
+def get_nutrition_info(item: str, extra_fields: list = []):
     food_stuff = next(client.search_foods(item, 1))
     report = client.get_food_report(food_stuff.id, report_type=UsdaNdbReportType.full)
     l = {}
+
     for nutrient in report.nutrients:
         nutrient_name = nutrient.name.split(',')[0].title()
 
         # Converts 'Vitamin B-6' to 'Vitamin B6'
         if 'Vitamin' in nutrient_name:
             nutrient_name = nutrient_name.replace('-', '')
-
-        if is_micronutrient(nutrient_name):
-            l[nutrient_name] = {}
-            l[nutrient_name]["unit"] = nutrient.unit
-            l[nutrient_name]["value"] = nutrient.value
+        elif nutrient_name == "Energy":
+            nutrient_name += nutrient.unit
+        #else: #if is_micronutrient(nutrient_name):
+        l[nutrient_name] = {}
+        l[nutrient_name]["unit"] = nutrient.unit
+        l[nutrient_name]["value"] = nutrient.value
+        #print(f"{nutrient.name} {nutrient.value}{nutrient.unit}.")
     return l
 
 
