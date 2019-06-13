@@ -1,36 +1,38 @@
 import functools
 
-from macros import Macros
 from container import Container
 from rda_ai import get_in_gram
 from micronutrients import is_vitamin, is_mineral
 
 
 class Food:
-    energy_kcal = 0
-    energy_kj = 0  # Energy as container also with name Kj and kcal ? or function: kj = kcal * 4.184
-    macros = Container("Macros")
-    mineral = Container("Minerals")
-    vitamins = Container("Vitamins")
-    sugars = Container("Sugars")
-    substance = Container("Substances")
+
 
     def __init__(self):
+        self.energy_kcal = 0
+        self.energy_kj = 0  # Energy as container also with name Kj and kcal ? or function: kj = kcal * 4.184
+        self.mineral = Container("Minerals")
+        self.vitamins = Container("Vitamins")
+
+        self.substance = Container("Substances")
         self.substance.add_item("Water", 0.0)
+
+        self.sugars = Container("Sugars")
         self.sugars.add_item("Sucrose", 0.0)
         self.sugars.add_item(("Fructose", "Glucose"), 0.0)
         self.sugars.add_item("Lactose", 0.0)
         self.sugars.add_item("Maltose", 0.0)
-        self.macros.add_item("Protein", 0.0)
+
+
+        self.macros = Container("Macros")
         self.macros.add_item("Carbohydrate", 0.0)
         self.macros.add_item("Protein", 0.0)
-
         fat = Container("Fats")
         fat.add_item("Saturated", 0.0)
         fat.add_item("Monounsaturated", 0.0)
         fat.add_item("Polyunsaturated", 0.0)
         fat.add_item("Trans", 0.0)
-        self.macros.add_item("Fats", fat)
+        self.macros.add_item("", fat)
 
     def __str__(self):
         s = f"Energy: {self.energy_kcal}kcal /{self.energy_kj}kJ\n"
@@ -59,6 +61,8 @@ class Food:
             self.macros.add_item(name, get_in_gram(unit, value))
         elif name in self.sugars.get_names():
             self.sugars.add_item(name, get_in_gram(unit, value))
+        elif name in self.substance.get_names():
+            self.substance.add_item(name, get_in_gram(unit, value))
         else:
             # print(f"Not added: {name} with {value}{unit}")
             pass

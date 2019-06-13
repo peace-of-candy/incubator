@@ -32,7 +32,6 @@ def get_food_from_usda_item(item, replace=[], replace_with=[]):
             name = replace_with[replace.index(name)]
         elif re.fullmatch("^\d+:\d+$", name):
             # This is fats.
-            # 0
             fattytype = name.split(":")[1]
             if fattytype == "0":
                 name = "Saturated"
@@ -49,16 +48,18 @@ groups = get_elements_and_vitamins_in_groups()
 male19to30 = groups["Males 19–30 y"]
 
 sf = SuperFood()
-r = ['Energy', 'Protein', 'Carbohydrate, by difference', 'Sucrose', 'Glucose (Dextrose)', 'Fructose', 'Lactose', 'Maltose', 'Fatty acids, total monounsaturated', 'Fatty acids, total polyunsaturated', 'Fatty acids, total trans']
-rw = ['Energy', 'Protein', 'Carbohydrate', 'Sucrose', 'Glucose', 'Fructose', 'Lactose', 'Maltose', 'Monounsaturated', 'Polyunsaturated', 'Trans']
+r = ['Energy', 'Protein', 'Carbohydrate, by difference', 'Sucrose', 'Glucose (Dextrose)', 'Fructose', 'Lactose', 'Maltose']#, 'Fatty acids, total monounsaturated', 'Fatty acids, total polyunsaturated', 'Fatty acids, total trans', 'Fatty acids, total saturated']
+rw = ['Energy', 'Protein', 'Carbohydrate', 'Sucrose', 'Glucose', 'Fructose', 'Lactose', 'Maltose']#, 'Monounsaturated', 'Polyunsaturated', 'Trans', 'Saturated']
 
 broc_usda = get_food_from_usda_item(get_nutrition_info('Broccoli, raw'), r, rw)
 blue_usda = get_food_from_usda_item(get_nutrition_info('Blueberries, raw'), r, rw)
 wal_usda = get_food_from_usda_item(get_nutrition_info('Walnuts, raw'), r, rw)
+
 sf.add(broc_usda)
 sf.add(blue_usda)
 sf.add(wal_usda)
-print(broc_usda)
+
+
 for t in ['Saturated', 'kcal']:
     print(f"Broc {t}: {broc_usda.get_value(t)}")
     print(f"blue {t}: {blue_usda.get_value(t)}")

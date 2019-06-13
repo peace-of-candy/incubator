@@ -8,12 +8,14 @@ class Container:
         self.subnames = []
 
     def __str__(self):
-        s = f"{self.name} ({self.get_totals():.4f})\n"
-        for n in self.subnames:
-            if type(self.values[self.subnames.index(n)]) == Container:
-                s += " - " + str(self.values[self.subnames.index(n)]).replace("\n", "\n  ")
+        s = ""
+        if 0 < len(self.name):
+            s = f"{self.name} ({self.get_totals():.4f})\n"
+        for i, v in enumerate(self.values):
+            if type(v) == Container:
+                s += " - " + str(v).replace("\n", "\n  ")[:-2]
             else:
-                s += f" - {n}: {self.values[self.subnames.index(n)]:.4f}\n"
+                s += f" - {self.subnames[i]}: {v:.4f}\n"
         return s
 
     def add_item(self, name, value):
