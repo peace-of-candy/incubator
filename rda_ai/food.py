@@ -9,25 +9,36 @@ from micronutrients import is_vitamin, is_mineral
 class Food:
     energy_kcal = 0
     energy_kj = 0  # Energy as container also with name Kj and kcal ? or function: kj = kcal * 4.184
-    water = 0  # TODO: This should be added to a Container with "extras", containing water, fiber, ..
-    macros = Macros()  # TODO: Implememnt Container to take container as a subcontainer ?
+    macros = Container("Macros")
     mineral = Container("Minerals")
     vitamins = Container("Vitamins")
     sugars = Container("Sugars")
+    substance = Container("Substances")
 
     def __init__(self):
+        self.substance.add_item("Water", 0.0)
         self.sugars.add_item("Sucrose", 0.0)
         self.sugars.add_item(("Fructose", "Glucose"), 0.0)
         self.sugars.add_item("Lactose", 0.0)
         self.sugars.add_item("Maltose", 0.0)
+        self.macros.add_item("Protein", 0.0)
+        self.macros.add_item("Carbohydrate", 0.0)
+        self.macros.add_item("Protein", 0.0)
+
+        fat = Container("Fats")
+        fat.add_item("Saturated", 0.0)
+        fat.add_item("Monounsaturated", 0.0)
+        fat.add_item("Polyunsaturated", 0.0)
+        fat.add_item("Trans", 0.0)
+        self.macros.add_item("Fats", fat)
 
     def __str__(self):
         s = f"Energy: {self.energy_kcal}kcal /{self.energy_kj}kJ\n"
-        s += f"Water: {self.water}g \n"
         s += str(self.macros)
         s += str(self.sugars)
         s += str(self.vitamins)
         s += str(self.mineral)
+        s += str(self.substance)
         return s
 
     def add_item(self, name, value, unit):
@@ -44,10 +55,8 @@ class Food:
                 self.energy_kcal = value
             elif unit == "kJ":
                 self.energy_kj = value
-        elif name == "Water":
-            self.water = get_in_gram(unit, value)
-        elif name in self.macros.get_macro_names():
-            self.macros.add(name, get_in_gram(unit, value))
+        elif name in self.macros.get_names():
+            self.macros.add_item(name, get_in_gram(unit, value))
         elif name in self.sugars.get_names():
             self.sugars.add_item(name, get_in_gram(unit, value))
         else:
@@ -55,7 +64,6 @@ class Food:
             pass
 
     def get_value(self, name: str) -> float:
-        # TODO: if not exist, Error or 0.0 ?
         if is_vitamin(name):
             return self.vitamins.get_value(name) or 0.0
         elif is_mineral(name):
@@ -64,12 +72,12 @@ class Food:
             return self.energy_kcal
         elif name == "kJ":
             return self.energy_kj
-        elif name == "Water":
-            return self.water
-        elif name in self.macros.get_macro_names():
-            self.macros.get_value(name)
+        elif name in self.macros.get_names():
+            return self.macros.get_value(name)
         elif name in self.sugars.get_names():
-            self.sugars.get_value(name)
+            return self.sugars.get_value(name)
+        elif name in self.substance.get_names():
+            return self.substance.get_value(name)
         else:
             raise ValueError(f"Didn't find {name} in the food.")
             pass

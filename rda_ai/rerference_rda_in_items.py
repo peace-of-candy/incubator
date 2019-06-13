@@ -58,11 +58,12 @@ wal_usda = get_food_from_usda_item(get_nutrition_info('Walnuts, raw'), r, rw)
 sf.add(broc_usda)
 sf.add(blue_usda)
 sf.add(wal_usda)
-
-print(f"Broc kcal: {broc_usda.get_value('kcal')}")
-print(f"blue kcal: {blue_usda.get_value('kcal')}")
-print(f"Wal kcal: {wal_usda.get_value('kcal')}")
-print(f"All kcal: {sf.get_value('kcal')}")
+print(broc_usda)
+for t in ['Saturated', 'kcal']:
+    print(f"Broc {t}: {broc_usda.get_value(t)}")
+    print(f"blue {t}: {blue_usda.get_value(t)}")
+    print(f"Wal {t}: {wal_usda.get_value(t)}")
+    print(f"All {t}: {sf.get_value(t)}")
 
 
 #print(broc)
