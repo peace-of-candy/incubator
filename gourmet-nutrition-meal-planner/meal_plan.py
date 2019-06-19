@@ -34,7 +34,10 @@ class Day:
 	def __str__(self):
 		def format_meal(meal):
 			def format_name(meal):
-				return f'{meal.name}{" (PW)" if meal.postworkout else ""}'  
+				pw_label = " (PW)" if meal.postworkout else ""
+				serving_size_label = f' ({meal.serving_size})' if meal.serving_size != 'L' else ""
+
+				return f'{meal.name}{pw_label}{serving_size_label}'
 
 			def format_macros(meal):
 				return f'{list(map(str, meal.macros))}'

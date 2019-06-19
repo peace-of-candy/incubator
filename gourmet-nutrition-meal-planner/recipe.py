@@ -75,6 +75,7 @@ class Recipe:
 	protein: Protein 
 	postworkout: bool = False
 	macros: List[Any] = field(init=False)
+	serving_size: str = 'L'
 
 	def __post_init__(self):
 		self.macros = [self.fat, self.carbs, self.protein]
@@ -84,7 +85,7 @@ class Recipe:
 		return 9*float(self.fat.total) + 4*float(self.carbs.total) + 4*float(self.protein.total)
 
 	def small(self):
-		return Recipe(self.name, self.page, self.fat/2, self.carbs/2, self.protein/2, self.postworkout)
+		return Recipe(self.name, self.page, self.fat/2, self.carbs/2, self.protein/2, self.postworkout, serving_size = 'S')
 
 class Meal(Recipe):
 	pass
