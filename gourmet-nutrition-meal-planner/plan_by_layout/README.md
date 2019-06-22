@@ -1,4 +1,4 @@
-Plan by Schedule
+Plan by Layout
 ===
 
 Here is a different approach that plans meals out by accepting a list
