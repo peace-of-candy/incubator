@@ -31,7 +31,7 @@ def aggregate_proteins(recipes):
 
 def pretty_print_day(day_name, daily_meal_plan, recipes):
     # A daily meal plan is on the form 
-    # monday = ['GCF', 'PY', '8LD', 'ACB', 'CC']
+    # monday = [('GCF', 'AT'), ('PY', 'at'), ('8LD', 'pW'), ('ACB', 'at'), ('CC', 'AT')]
     def get_recipes(daily_meal_plan, recipes):
         return [recipes[recipe_label] for (recipe_label, _) in daily_meal_plan]
 
